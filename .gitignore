@@ -1,0 +1,4 @@
+# compiled output
+/nestjs/dist
+/nestjs/node_modules
+
