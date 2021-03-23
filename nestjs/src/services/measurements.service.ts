@@ -9,6 +9,10 @@ export class MeasurementsService {
     @InjectRepository(UnitModel) private unitRepository: Repository<UnitModel>,
   ) {}
 
+  async getRoot(): Promise<UnitModel> {
+    return await this.unitRepository.findOne({parentId: null});
+  }
+
   async getUnits(): Promise<UnitModel[]> {
     return await this.unitRepository.find();
   }
@@ -28,6 +32,11 @@ export class MeasurementsService {
   }
 
   async delete(id: number) {
-    return await this.unitRepository.delete(id);
+    await this.unitRepository
+        .createQueryBuilder()
+        .delete()
+        .from(UnitModel)
+        .where("id = :id", { id })
+        .execute();
   }
 }

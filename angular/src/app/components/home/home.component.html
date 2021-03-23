@@ -1,0 +1,87 @@
+<div class="container">
+  <button class="btn btn-primary mt-2 mb-2" (click)="getUnits()">Refresh data</button>
+  <div class="row pt-4">
+    <div class="col">
+      <div class="input-group mb-3">
+        <input [(ngModel)]="toAdd.relativeValue"
+               type="number"
+               class="form-control"
+               placeholder="Relative value"
+               aria-label="Relative value">
+        <input [(ngModel)]="toAdd.title"
+               type="text"
+               class="form-control ml-1"
+               placeholder="Relative title"
+               aria-label="Relative title">
+        <div class="btn-group" dropdown>
+          <button id="button-b" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+                  aria-controls="dropdown-basic">
+            Parent: {{getParent(toAdd.parentId)?.title}} <span class="caret"></span>
+          </button>
+          <ul id="dropdown-b" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <div *ngFor="let uni of units">
+              <li *ngIf="uni.id != toAdd.id" role="menuitem">
+                <a class="dropdown-item" (click)="toAdd.parentId = uni.id">{{uni.title}}</a>
+              </li>
+            </div>
+          </ul>
+        </div>
+        <button class="btn btn-primary ml-1 mr-2" (click)="add()">Save</button>
+        <button class="btn btn-danger" (click)="reset()">Reset</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <ul class="list-group">
+        <div>
+          <li class="list-group-item d-flex justify-content-between" *ngFor="let unit of units">
+            <div>
+              <span>{{unit.title}}</span> -
+              <span>{{unit.relativeValue}} m</span>
+              <span *ngIf="rootUnit.id === unit.id" class="ml-2 badge bg-primary text-white">Root node</span>
+              <div>{{getParent(unit.parentId)?.title ? 'Child of ' + getParent(unit.parentId)?.title : ''}}</div>
+            </div>
+            <div *ngIf="rootUnit.id !== unit.id">
+              <button class="btn btn-danger ml-1" (click)="delete(unit)">Delete</button>
+              <button class="btn btn-primary ml-1" (click)="edit(unit)">Update</button>
+            </div>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </div>
+  <div class="row pt-4" *ngIf="toEdit">
+    <div class="col">
+      <div class="input-group mb-3">
+        <input [(ngModel)]="toEdit.relativeValue"
+               type="number"
+               class="form-control"
+               placeholder="Relative value"
+               aria-label="Relative value">
+        <input [(ngModel)]="toEdit.title"
+               type="text"
+               class="form-control ml-1"
+               placeholder="Relative title"
+               aria-label="Relative title">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+                  aria-controls="dropdown-basic">
+            Parent: {{getParent(toEdit.parentId).title}} <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <div *ngFor="let uni of units">
+              <li *ngIf="uni.id != toEdit.id" role="menuitem">
+                <a class="dropdown-item" (click)="toEdit.parentId = uni.id">{{uni.title}}</a>
+              </li>
+            </div>
+          </ul>
+        </div>
+        <button class="btn btn-primary ml-1 mr-2" (click)="update()">Save</button>
+        <button class="btn btn-danger" (click)="cancel()">Cancel editing</button>
+      </div>
+    </div>
+  </div>
+</div>

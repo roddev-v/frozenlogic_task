@@ -18,6 +18,11 @@ export class UnitModel extends BaseEntity {
   @Column()
   relativeValue: string;
 
+  @Column({
+    nullable: true
+  })
+  parentId: number;
+
   @ManyToOne((type) => UnitModel, (category) => category.child)
   parent: UnitModel;
 

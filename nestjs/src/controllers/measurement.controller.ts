@@ -15,6 +15,11 @@ import { UnitModel } from '../models/unit.model';
 export class MeasurementController {
   constructor(private readonly measurementsService: MeasurementsService) {}
 
+  @Get('root')
+  async getRoot(): Promise<UnitModel> {
+    return await this.measurementsService.getRoot();
+  }
+
   @Get()
   async getAll(): Promise<UnitModel[]> {
     return await this.measurementsService.getUnits();
@@ -35,7 +40,7 @@ export class MeasurementController {
     return await this.measurementsService.put(body);
   }
 
-  @Delete()
+  @Delete(':id')
   async delete(id: number): Promise<any> {
     return await this.measurementsService.delete(id);
   }
